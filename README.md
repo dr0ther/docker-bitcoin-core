@@ -1,4 +1,4 @@
-# ruimarinho/bitcoin-core
+# dr0ther/bitcoin-core
 
 A bitcoin-core docker image with support for the following platforms:
 
@@ -9,6 +9,9 @@ A bitcoin-core docker image with support for the following platforms:
 [![ruimarinho/bitcoin-core][docker-pulls-image]][docker-hub-url] [![ruimarinho/bitcoin-core][docker-stars-image]][docker-hub-url] [![ruimarinho/bitcoin-core][docker-size-image]][docker-hub-url]
 
 ## Tags
+
+- `28.1.0`, `24`, `latest` ([24/Dockerfile](https://github.com/ruimarinho/docker-bitcoin-core/blob/master/24/Dockerfile)) [**multi-arch**]
+- `28.1.0-alpine`, `24-alpine` ([24/alpine/Dockerfile](https://github.com/ruimarinho/docker-bitcoin-core/blob/master/24/alpine/Dockerfile))
 
 - `24.0.1`, `24`, `latest` ([24/Dockerfile](https://github.com/ruimarinho/docker-bitcoin-core/blob/master/24/Dockerfile)) [**multi-arch**]
 - `24.0.1-alpine`, `24-alpine` ([24/alpine/Dockerfile](https://github.com/ruimarinho/docker-bitcoin-core/blob/master/24/alpine/Dockerfile))
