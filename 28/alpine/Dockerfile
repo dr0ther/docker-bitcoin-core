@@ -35,6 +35,7 @@ RUN apk --no-cache add build-base
 RUN apk --no-cache add chrpath
 RUN apk --no-cache add file
 RUN apk --no-cache add gnupg
+RUN apk --no-cache add git
 RUN apk --no-cache add libevent-dev
 RUN apk --no-cache add libressl
 RUN apk --no-cache add libtool
@@ -42,34 +43,17 @@ RUN apk --no-cache add linux-headers
 RUN apk --no-cache add sqlite-dev
 RUN apk --no-cache add zeromq-dev
 RUN set -ex \
-  && for key in \
-  152812300785C96444D3334D17565732E08E5E41 \
-  0AD83877C1F0CD1EE9BD660AD7CC770B81FD22A8 \
-  590B7292695AFFA5B672CBB2E13FC145CD3F4304 \
-  CFB16E21C950F67FA95E558F2EEB9F5CC09526C1 \
-  F4FC70F07310028424EFC20A8E4256593F177720 \
-  D1DBF2C4B96F2DEBF4C16654410108112E7EA81F \
-  287AE4CA1187C68C08B49CB2D11BD4F33F1DB499 \
-  9DEAE0DC7063249FB05474681E4AED62986CD25D \
-  3EB0DEE6004A13BE5A0CC758BF2978B068054311 \
-  ED9BDF7AD6A55E232E84524257FF9BDBCC301009 \
-  28E72909F1717FE9607754F8A7BEB2621678D37D \
-  79D00BAC68B56D422F945A8F8E3A8F3247DBCBBF \
-  ; do \
-  gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$key" || \
-  gpg --batch --keyserver keys.openpgp.org --recv-keys "$key" || \
-  gpg --batch --keyserver keyserver.pgp.com --recv-keys "$key" || \
-  gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" || \
-  gpg --batch --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" ; \
-  done
+  && git clone https://github.com/bitcoin-core/guix.sigs \
+  && gpg --import guix.sigs/builder-keys/*
 
-ENV BITCOIN_VERSION=28.1.0
+ENV BITCOIN_VERSION=28.1
 ENV BITCOIN_PREFIX=/opt/bitcoin-${BITCOIN_VERSION}
 
 RUN wget https://bitcoincore.org/bin/bitcoin-core-${BITCOIN_VERSION}/SHA256SUMS
 RUN wget https://bitcoincore.org/bin/bitcoin-core-${BITCOIN_VERSION}/SHA256SUMS.asc
 RUN wget https://bitcoincore.org/bin/bitcoin-core-${BITCOIN_VERSION}/bitcoin-${BITCOIN_VERSION}.tar.gz
-RUN gpg --verify SHA256SUMS.asc SHA256SUMS
+RUN sha256sum --ignore-missing --check SHA256SUMS
+RUN gpg --verify SHA256SUMS.asc
 RUN grep " bitcoin-${BITCOIN_VERSION}.tar.gz\$" SHA256SUMS | sha256sum -c -
 RUN tar -xzf *.tar.gz
 
